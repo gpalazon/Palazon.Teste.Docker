@@ -12,8 +12,8 @@ using Palazon.Teste.Docker.Infraestructure;
 namespace Palazon.Teste.Docker.Infraestructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241128224552_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20241129143057_DescriptiveMigrationName")]
+    partial class DescriptiveMigrationName
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,11 +35,12 @@ namespace Palazon.Teste.Docker.Infraestructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Profiles");
+                    b.ToTable("Profiles", (string)null);
                 });
 
             modelBuilder.Entity("Palazon.Teste.Docker.Domain.Models.Project", b =>
@@ -52,7 +53,8 @@ namespace Palazon.Teste.Docker.Infraestructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -61,7 +63,7 @@ namespace Palazon.Teste.Docker.Infraestructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Projects", (string)null);
                 });
 
             modelBuilder.Entity("Palazon.Teste.Docker.Domain.Models.TaskHistory", b =>
@@ -80,11 +82,13 @@ namespace Palazon.Teste.Docker.Infraestructure.Migrations
 
                     b.Property<string>("NewValue")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("PropertyName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("TaskId")
                         .HasColumnType("int");
@@ -95,7 +99,7 @@ namespace Palazon.Teste.Docker.Infraestructure.Migrations
 
                     b.HasIndex("TaskId");
 
-                    b.ToTable("TaskHistories");
+                    b.ToTable("TaskHistories", (string)null);
                 });
 
             modelBuilder.Entity("Palazon.Teste.Docker.Domain.Models.Tasks", b =>
@@ -108,7 +112,8 @@ namespace Palazon.Teste.Docker.Infraestructure.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime>("DueDate")
                         .HasColumnType("datetime2");
@@ -126,7 +131,8 @@ namespace Palazon.Teste.Docker.Infraestructure.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -137,7 +143,7 @@ namespace Palazon.Teste.Docker.Infraestructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("Tasks", (string)null);
                 });
 
             modelBuilder.Entity("Palazon.Teste.Docker.Domain.Models.User", b =>
@@ -164,7 +170,7 @@ namespace Palazon.Teste.Docker.Infraestructure.Migrations
 
                     b.HasIndex("ProfileId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Palazon.Teste.Docker.Domain.Models.Project", b =>
@@ -183,7 +189,7 @@ namespace Palazon.Teste.Docker.Infraestructure.Migrations
                     b.HasOne("Palazon.Teste.Docker.Domain.Models.User", "ModifiedBy")
                         .WithMany("TaskHistories")
                         .HasForeignKey("ModifiedById")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Palazon.Teste.Docker.Domain.Models.Tasks", "Task")
@@ -221,7 +227,7 @@ namespace Palazon.Teste.Docker.Infraestructure.Migrations
                     b.HasOne("Palazon.Teste.Docker.Domain.Models.Profile", "Profile")
                         .WithMany("Users")
                         .HasForeignKey("ProfileId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Profile");
